@@ -2,6 +2,7 @@ from keras.models import *
 from keras.layers import *
 import keras.backend as K
 import keras
+import tensorflow as tf
 
 from .config import IMAGE_ORDERING
 
