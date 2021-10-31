@@ -209,11 +209,11 @@ def train(model,
 
     if not validate:
         # Add history variable to easy plotting
-        history = model.fit(train_gen, steps_per_epoch=steps_per_epoch,
+        model.fit(train_gen, steps_per_epoch=steps_per_epoch,
                   epochs=epochs, callbacks=callbacks, initial_epoch=initial_epoch)
     else:
         # Add history variable to easy plotting
-        history = model.fit(train_gen,
+        model.fit(train_gen,
                   steps_per_epoch=steps_per_epoch,
                   validation_data=val_gen,
                   validation_steps=val_steps_per_epoch,
