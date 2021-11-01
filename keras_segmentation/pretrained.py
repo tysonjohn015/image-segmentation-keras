@@ -43,7 +43,7 @@ def pspnet_50_ADE_20K():
 
     model_url = "https://www.dropbox.com/s/" \
                 "0uxn14y26jcui4v/pspnet50_ade20k.h5?dl=1"
-    latest_weights = keras.utils.get_file("pspnet50_ade20k.h5", model_url)
+    latest_weights = tf.keras.utils.get_file("pspnet50_ade20k.h5", model_url)
 
     return model_from_checkpoint_path(model_config, latest_weights)
 
@@ -59,7 +59,7 @@ def pspnet_101_cityscapes():
 
     model_url = "https://www.dropbox.com/s/" \
                 "c17g94n946tpalb/pspnet101_cityscapes.h5?dl=1"
-    latest_weights = keras.utils.get_file("pspnet101_cityscapes.h5", model_url)
+    latest_weights = tf.keras.utils.get_file("pspnet101_cityscapes.h5", model_url)
 
     return model_from_checkpoint_path(model_config, latest_weights)
 
