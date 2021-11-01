@@ -1,3 +1,5 @@
+import tensorflow as tf
+from tensorflow import keras
 import keras
 from keras.models import *
 from keras.layers import *
