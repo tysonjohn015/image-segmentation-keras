@@ -221,15 +221,26 @@ def train(model,
                   use_multiprocessing=gen_use_multiprocessing, initial_epoch=initial_epoch)
        
         # Function to plot learning curves
-        def plot_graphs(history, string):
-            plt.plot(history.history[string])
-            plt.plot(history.history['val_'+string])
-            plt.xlabel("Epochs")
-            plt.ylabel(string)
-            plt.legend([string, 'val_'+string])
-            plt.show()
+        plt.figure(figsize=(30,6))
         
-        # Call function to plot learning curves
-        plot_graphs(history, "accuracy")
-        plot_graphs(history, "loss")
-        plot_graphs(history, "dice_coeff")
+        plt.subplot(131)
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.xlabel('Epochs')
+        plt.ylabel('loss')
+        plt.legend(['loss', 'val_loss'])
+        
+        plt.subplot(132)
+        plt.plot(history.history['dice_coeff'])
+        plt.plot(history.history['val_dice_coeff'])
+        plt.xlabel('Epochs')
+        plt.ylabel('dice_coeff')
+        plt.legend(['dice_coeff', 'val_dice_coeff'])
+        
+        plt.subplot(133)
+        plt.plot(history.history['accuracy'])
+        plt.plot(history.history['val_accuracy'])
+        plt.xlabel('Epochs')
+        plt.ylabel('accuracy')
+        plt.legend(['accuracy', 'val_accuracy'])
+        plt.show()
