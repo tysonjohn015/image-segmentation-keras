@@ -116,7 +116,7 @@ def train(model,
         assert val_annotations is not None
 
     # Add score_IoU metrics
-    if loss:
+    if loss==None:
         model.compile(loss='categorical_crossentropy',
                       optimizer=optimizer_name,
                       metrics=[score_IoU, 'accuracy'])
