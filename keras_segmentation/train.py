@@ -225,11 +225,11 @@ def train(model,
         plt.legend(['loss', 'val_loss'])
         
         plt.subplot(132)
-        plt.plot(history.history['dice_coeff'])
-        plt.plot(history.history['val_dice_coeff'])
+        plt.plot(history.history['score_IoU'])
+        plt.plot(history.history['val_score_IoU'])
         plt.xlabel('Epochs')
-        plt.ylabel('dice_coeff')
-        plt.legend(['dice_coeff', 'val_dice_coeff'])
+        plt.ylabel('score_IoU')
+        plt.legend(['score_IoU', 'val_score_IoU'])
         
         plt.subplot(133)
         plt.plot(history.history['accuracy'])
