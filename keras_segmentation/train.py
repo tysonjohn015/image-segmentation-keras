@@ -11,6 +11,10 @@ import tensorflow as tf
 import glob
 import sys
 
+# Introduce tf.keras mean IoU as metrics
+score_IoU = tf.keras.metrics.MeanIoU(num_classes=n_classes,
+                                     name='score_IoU')
+
 def find_latest_checkpoint(checkpoints_path, fail_safe=True):
 
     # This is legacy code, there should always be a "checkpoint" file in your directory
@@ -57,15 +61,6 @@ class CheckpointsCallback(Callback):
             self.model.save_weights(self.checkpoints_path + "." + str(epoch))
             print("saved ", self.checkpoints_path + "." + str(epoch))
 
-# Introduce Dice Coeff as metrics
-def dice_coeff(y_true, y_pred):
-    smooth = 1.
-    y_true_f = K.flatten(y_true)
-    y_pred_f = K.flatten(y_pred)
-    intersection = K.sum(y_true_f * y_pred_f)
-    score = (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
-    return score
-
 # Set the parameters / hyperparameters for training
 def train(model,
           train_images,
@@ -88,6 +83,7 @@ def train(model,
           gen_use_multiprocessing=False,
           ignore_zero_class=False,
           optimizer_name='adam',
+          loss=loss,
           do_augment=False,
           augmentation_name="aug_all",
           callbacks=None,
@@ -119,17 +115,10 @@ def train(model,
         assert val_images is not None
         assert val_annotations is not None
 
-    if optimizer_name is not None:
-
-        if ignore_zero_class:
-            loss_k = masked_categorical_crossentropy
-        else:
-            loss_k = 'categorical_crossentropy'
-
-        # Add dice coeff metrics
-        model.compile(loss=loss_k,
-                      optimizer=optimizer_name,
-                      metrics=[dice_coeff, 'accuracy'])
+    # Add score_IoU metrics
+    model.compile(loss=loss,
+                  optimizer=optimizer_name,
+                  metrics=[score_IoU, 'accuracy'])
 
     if checkpoints_path is not None:
         config_file = checkpoints_path + "_config.json"
