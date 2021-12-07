@@ -83,7 +83,7 @@ def train(model,
           gen_use_multiprocessing=False,
           ignore_zero_class=False,
           optimizer_name='adam',
-          loss=loss,
+          loss=None,
           do_augment=False,
           augmentation_name="aug_all",
           callbacks=None,
@@ -116,9 +116,14 @@ def train(model,
         assert val_annotations is not None
 
     # Add score_IoU metrics
-    model.compile(loss=loss,
-                  optimizer=optimizer_name,
-                  metrics=[score_IoU, 'accuracy'])
+    if loss:
+        model.compile(loss='categorical_crossentropy',
+                      optimizer=optimizer_name,
+                      metrics=[score_IoU, 'accuracy'])
+    else:
+        model.compile(loss=loss,
+                      optimizer=optimizer_name,
+                      metrics=[score_IoU, 'accuracy'])
 
     if checkpoints_path is not None:
         config_file = checkpoints_path + "_config.json"
