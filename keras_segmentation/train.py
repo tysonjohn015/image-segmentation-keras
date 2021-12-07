@@ -12,7 +12,7 @@ import glob
 import sys
 
 # Introduce tf.keras mean IoU as metrics
-score_IoU = tf.keras.metrics.MeanIoU(num_classes=n_classes,
+score_IoU = tf.keras.metrics.MeanIoU(num_classes=8,
                                      name='score_IoU')
 
 def find_latest_checkpoint(checkpoints_path, fail_safe=True):
