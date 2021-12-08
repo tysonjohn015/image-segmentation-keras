@@ -88,6 +88,7 @@ def train(model,
           augmentation_name="aug_all",
           callbacks=None,
           custom_augmentation=None,
+          display_history=True,
           other_inputs_paths=None,
           preprocessing=None,
           read_image_type=1  # cv2.IMREAD_COLOR = 1 (rgb),
@@ -201,11 +202,7 @@ def train(model,
     if callbacks is None:
         callbacks = []
 
-    if not validate:
-        # Add history variable to easy plotting
-        history = model.fit(train_gen, steps_per_epoch=steps_per_epoch,
-                  epochs=epochs, callbacks=callbacks, initial_epoch=initial_epoch)
-    else:
+    if display_history:
         # Add history variable to easy plotting
         history = model.fit(train_gen,
                   steps_per_epoch=steps_per_epoch,
@@ -238,3 +235,13 @@ def train(model,
         plt.ylabel('accuracy')
         plt.legend(['accuracy', 'val_accuracy'])
         plt.show()
+        
+    else:
+        # Add history variable to easy plotting
+        history = model.fit(train_gen,
+                  steps_per_epoch=steps_per_epoch,
+                  validation_data=val_gen,
+                  validation_steps=val_steps_per_epoch,
+                  epochs=epochs, callbacks=callbacks,
+                  use_multiprocessing=gen_use_multiprocessing, initial_epoch=initial_epoch)
+        return history
