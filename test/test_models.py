@@ -19,8 +19,6 @@ tr_an = "test/example_dataset/annotations_prepped_train"
 te_im = "test/example_dataset/images_prepped_test"
 te_an = "test/example_dataset/annotations_prepped_test"
 
-
-
 def test_models():
 
     n_c = 100
