@@ -12,8 +12,7 @@ import glob
 import sys
 
 # Introduce tf.keras mean IoU as metrics
-score_IoU = tf.keras.metrics.MeanIoU(num_classes=8,
-                                     name='score_IoU')
+score_IoU = tf.keras.metrics.MeanIoU(num_classes=8, name='score_IoU')
 
 def find_latest_checkpoint(checkpoints_path, fail_safe=True):
 
@@ -171,33 +170,27 @@ def train(model,
                                                    n_classes)
             assert verified
 
-    train_gen = image_segmentation_generator(
-        train_images, train_annotations,  batch_size,  n_classes,
-        input_height, input_width, output_height, output_width,
-        do_augment=do_augment, augmentation_name=augmentation_name,
-        custom_augmentation=custom_augmentation, other_inputs_paths=other_inputs_paths,
-        preprocessing=preprocessing, read_image_type=read_image_type)
+    train_gen = image_segmentation_generator(train_images, train_annotations,  batch_size,  n_classes,
+                                             input_height, input_width, output_height, output_width,
+                                             do_augment=do_augment, augmentation_name=augmentation_name,
+                                             custom_augmentation=custom_augmentation, other_inputs_paths=other_inputs_paths,
+                                             preprocessing=preprocessing, read_image_type=read_image_type)
 
     if validate:
-        val_gen = image_segmentation_generator(
-            val_images, val_annotations,  val_batch_size,
-            n_classes, input_height, input_width, output_height, output_width,
-            other_inputs_paths=other_inputs_paths,
-            preprocessing=preprocessing, read_image_type=read_image_type)
+        val_gen = image_segmentation_generator(val_images, val_annotations,  val_batch_size,
+                                               n_classes, input_height, input_width, output_height,
+                                               output_width, other_inputs_paths=other_inputs_paths,
+                                               preprocessing=preprocessing, read_image_type=read_image_type)
 
     if callbacks is None and (not checkpoints_path is  None) :
-        default_callback = ModelCheckpoint(
-                filepath=checkpoints_path + ".{epoch:05d}",
-                save_weights_only=True,
-                verbose=True
-            )
+        default_callback = ModelCheckpoint(filepath=checkpoints_path + ".{epoch:05d}",
+                                           save_weights_only=True,
+                                           verbose=True)
 
         if sys.version_info[0] < 3: # for pyhton 2 
             default_callback = CheckpointsCallback(checkpoints_path)
 
-        callbacks = [
-            default_callback
-        ]
+        callbacks = [default_callback]
 
     if callbacks is None:
         callbacks = []
@@ -205,11 +198,12 @@ def train(model,
     if display_history:
         # Add history variable to easy plotting
         history = model.fit(train_gen,
-                  steps_per_epoch=steps_per_epoch,
-                  validation_data=val_gen,
-                  validation_steps=val_steps_per_epoch,
-                  epochs=epochs, callbacks=callbacks,
-                  use_multiprocessing=gen_use_multiprocessing, initial_epoch=initial_epoch)
+                            steps_per_epoch=steps_per_epoch,
+                            validation_data=val_gen,
+                            validation_steps=val_steps_per_epoch,
+                            epochs=epochs, callbacks=callbacks,
+                            use_multiprocessing=gen_use_multiprocessing,
+                            initial_epoch=initial_epoch)
        
         # Function to plot learning curves
         plt.figure(figsize=(30,6))
@@ -239,9 +233,10 @@ def train(model,
     else:
         # Add history variable to easy plotting
         history = model.fit(train_gen,
-                  steps_per_epoch=steps_per_epoch,
-                  validation_data=val_gen,
-                  validation_steps=val_steps_per_epoch,
-                  epochs=epochs, callbacks=callbacks,
-                  use_multiprocessing=gen_use_multiprocessing, initial_epoch=initial_epoch)
+                            steps_per_epoch=steps_per_epoch,
+                            validation_data=val_gen,
+                            validation_steps=val_steps_per_epoch,
+                            epochs=epochs, callbacks=callbacks,
+                            use_multiprocessing=gen_use_multiprocessing,
+                            initial_epoch=initial_epoch)
         return history
